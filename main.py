@@ -1,6 +1,6 @@
 import atexit
 import sys
-from converter_to_diagonal import check_if_diagonal_predominant, ConversionResult, \
+from converter_to_diagonal import ConversionResult, \
     try_to_convert_to_diagonal_predominant
 from pathlib import Path
 
@@ -35,15 +35,19 @@ def quit_gracefully():
 
 if __name__ == '__main__':
     atexit.register(quit_gracefully)
-    simple_iterator = input_matrix()
-
-    res: ConversionResult = try_to_convert_to_diagonal_predominant(simple_iterator)
-    if res.result:
-        simple_iterator.matrix = res.matrix
-        simple_iterator.prepare()
-        simple_iterator.solve()
-        print(f"Answer: {simple_iterator.answer}")
-        print(f"Number of iterations: {simple_iterator.iterations_count}")
-        print(f"Errors: {simple_iterator.errors}")
-    else:
-        print("Impossible to convert to diagonal predominant form")
+    try:
+        simple_iterator = input_matrix()
+        res: ConversionResult = try_to_convert_to_diagonal_predominant(simple_iterator)
+        if res.result:
+            simple_iterator.matrix = res.matrix
+            simple_iterator.prepare()
+            simple_iterator.solve()
+            print(f"Answer: {simple_iterator.answer}")
+            print(f"Number of iterations: {simple_iterator.iterations_count}")
+            print(f"Errors: {simple_iterator.errors}")
+        else:
+            print("Impossible to convert to diagonal predominant form")
+    except Exception as e:
+        print(e)
+    except KeyboardInterrupt:
+        print("Something bad happened...")
